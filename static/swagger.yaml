@@ -1,0 +1,575 @@
+swagger: '2.0'
+info:
+  title: "Factory Management System API"
+  description: "This is an API to manage a Factory Management System API application"
+  version: "1.0.0"
+host: "127.0.0.1:5000"
+schemes:
+  - "http"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+paths:
+  /customers:
+    post:
+      tags:
+        - customers
+      summary: "Create Customer"
+      description: "Endpoint to create a new Customer"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New Customer data"
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerData"
+      responses:
+        200:
+          description: "Customer created successfully"
+          schema:
+            $ref: "#/definitions/Customer"          
+          examples:
+            application/json:
+              message: "Data Validated"
+              status: "success"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Invalid Data"
+        500:
+          description: "Error with server"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"
+    get:
+      tags:
+        - customers
+      summary: "Get all Customers"
+      description: "Endpoint to view all Customers"
+      responses:
+        200:
+          description: "Successfully retreived all customers"
+          schema:
+            $ref: "#/definitions/Customer"
+          examples:
+            application/json:
+              id: 1
+              name: "Jane Doe"
+              email: "jdoe@email.com"
+              phone: "1234567890"
+
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "You have not been authorized"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "You do not have permission to perform this action"
+        500:
+          description: "Error with server"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"
+      security:
+        - bearerAuth: []
+  /employees:
+    post:
+      tags:
+        - employees
+      summary: "Create Employee"
+      description: "Endpoint to create a new Employee"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New Employee data"
+          required: true
+          schema:
+            $ref: "#/definitions/EmployeeData"
+      responses:
+        200:
+          description: "Employee created successfully"
+          schema:
+            $ref: "#/definitions/Employee"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Invalid Data"
+        500:
+          description: "Error with server"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"
+    get:
+      tags:
+        - employees
+      summary: "Get all Employee"
+      description: "Endpoint to view all Employee"
+      responses:
+        200:
+          description: "Successfully retreived all employees"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Employee"
+        500:
+          description: "Error with server"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"
+  /orders:
+    post:
+      tags:
+        - orders
+      summary: "Create Order"
+      description: "Endpoint to create a new Order"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New Order data"
+          required: true
+          schema:
+            $ref: "#/definitions/OrderData"
+      responses:
+        200:
+          description: "Order created successfully"
+          schema:
+            $ref: "#/definitions/Order"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Invalid Data"
+        500:
+          description: "Error with server"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"
+    get:
+      tags:
+        - orders
+      summary: "Get all Order"
+      description: "Endpoint to view all Order"
+      responses:
+        200:
+          description: "Successfully retreived all orders"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Order"
+        500:
+          description: "Error with server"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"
+  /orders/paginate:
+    get:
+      tags:
+        - orders
+      summary: "Get Orders in pages"
+      description: "Endpoint to view all Orders with pagination"
+      parameters:
+        - in: "path"
+          name: "page"
+          description: "Specific Page selection"
+          schema:
+            type: "integer"
+          required: true
+        - in: "path"
+          name: "per_page"
+          description: "Amount to disaply on each page"
+          schema:
+            type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Successfully retreived orders"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Order"
+        500:
+          description: "Error with server"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"
+  /products:
+    post:
+      tags:
+        - products
+      summary: "Create Product"
+      description: "Endpoint to create a new Product"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New Product data"
+          required: true
+          schema:
+            $ref: "#/definitions/ProductData"
+      responses:
+        200:
+          description: "Product created successfully"
+          schema:
+            $ref: "#/definitions/Product"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Invalid Data"
+        500:
+          description: "Error with server"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"
+    get:
+      tags:
+        - products
+      summary: "Get all Product"
+      description: "Endpoint to view all Product"
+      responses:
+        200:
+          description: "Successfully retreived all products"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
+        500:
+          description: "Error with server"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"
+  /products/paginate:
+    get:
+      tags:
+        - products
+      summary: "Get Products in pages"
+      description: "Endpoint to view all Products with pagination"
+      parameters:
+        - in: "path"
+          name: "page"
+          description: "Specific Page selection"
+          schema:
+            type: "integer"
+          required: true
+        - in: "path"
+          name: "per_page"
+          description: "Amount to disaply on each page"
+          schema:
+            type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Successfully retreived products"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
+        500:
+          description: "Error with server"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"
+  /productions:
+    post:
+      tags:
+        - productions
+      summary: "Create Production"
+      description: "Endpoint to create a new Production"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "New Production data"
+          required: true
+          schema:
+            $ref: "#/definitions/ProductionData"
+      responses:
+        200:
+          description: "Production created successfully"
+          schema:
+            $ref: "#/definitions/Production"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Invalid Data"
+        500:
+          description: "Error with server"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"
+    get:
+      tags:
+        - productions
+      summary: "Get all Productions"
+      description: "Endpoint to view all Productions"
+      responses:
+        200:
+          description: "Successfully retreived all productions"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Production"
+        500:
+          description: "Error with server"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              status: "error"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"
+definitions: 
+  Customer:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Customer name"
+      email:
+        type: "string"
+        description: "Customer email"
+      phone:
+        type: "string"
+        description: "Customer phone"
+      id:
+        type: "integer"
+        format: "int64"
+        description: "Customer's unique ID"
+    required:
+      - "id"
+      - "name"
+      - "email"
+      - "phone"
+  CustomerData:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Customer name"
+      email:
+        type: "string"
+        description: "Customer email"
+      phone:
+        type: "string"
+        description: "Customer phone"
+    required:
+      - "name"
+      - "email"
+      - "phone"
+  Employee:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Employee name"
+      position:
+        type: "string"
+        description: "Employee position"
+      id:
+        type: "integer"
+        format: "int64"
+        description: "Employee's unique ID"
+    required:
+      - "id"
+      - "name"
+      - "position"
+  EmployeeData:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Employee name"
+      position:
+        type: "string"
+        description: "Employee position"
+    required:
+      - "name"
+      - "position"
+  Order:
+    type: "object"
+    properties:
+      customer_id:
+        type: "integer"
+        description: "Id of Customer"
+      product_id:
+        type: "integer"
+        description: "Id of Product"
+      quantity:
+        type: "integer"
+        description: "Number of product in order"
+      total_price:
+        type: "number"
+        format: "float"
+        description: "Price of product times quantity"
+      id:
+        type: "integer"
+        format: "int64"
+        description: "Order's unique ID"
+    required:
+      - "id"
+      - "customer_id"
+      - "product_id"
+      - "quantity"
+      - "total_price"
+  OrderData:
+    type: "object"
+    properties:
+      customer_id:
+        type: "integer"
+        description: "Id of Customer"
+      product_id:
+        type: "integer"
+        description: "Id of Product"
+      quantity:
+        type: "integer"
+        description: "Number of product in order"
+      total_price:
+        type: "number"
+        format: "float"
+        description: "Price of product times quantity"
+    required:
+      - "customer_id"
+      - "product_id"
+      - "quantity"
+      - "total_price"
+  Product:
+    type: "object"
+    properties:
+      customer_id:
+        type: "integer"
+        description: "Id of Customer"
+      product_id:
+        type: "integer"
+        description: "Id of Product"
+      quantity:
+        type: "integer"
+        description: "Number of product in order"
+      total_price:
+        type: "number"
+        format: "float"
+        description: "Price of product times quantity"
+    required:
+      - "customer_id"
+      - "product_id"
+      - "quantity"
+      - "total_price"
+  ProductData:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Product name"
+      price:
+        type: "number"
+        format: "float"
+        description: "Product price"
+    required:
+      - "name"
+      - "price"
+  Production:
+    type: "object"
+    properties:
+      product_id:
+        type: "integer"
+        description: "Id of Product"
+      quantity_produced:
+        type: "integer"
+        description: "Number of Product made in Production run"
+      date_produced:
+        type: "date"
+        description: "Date of Production"
+      id:
+        type: "integer"
+        format: "int64"
+        description: "Production's unique ID"
+    required:
+      - "id"
+      - "product_id"
+      - "quantity_produced"
+      - "date_produced"
+  ProductionData:
+    type: "object"
+    properties:
+      product_id:
+        type: "integer"
+        description: "Id of Product"
+      quantity_produced:
+        type: "integer"
+        description: "Number of Product made in Production run"
+      date_produced:
+        type: "date"
+        description: "Date of Production"
+    required:
+      - "product_id"
+      - "quantity_produced"
+      - "date_produced"
+  Error:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        description: "Status of the error"
+      message:
+        type: "string"
+        description: "Description of the error"
+    required:
+      - "status"
+      - "message"
