@@ -4,16 +4,16 @@ from schema import ma
 from limiter import limiter
 from sqlalchemy.orm import Session
 
-from models.user import User
+from models.customerAccount import CustomerAccount
 from models.role import Role
-from models.userManagementRole import UserManagementRole
+from models.customerAccountManagementRole import CustomerAccountManagementRole
 
 from routes.customerBP import customer_blueprint
 from routes.employeeBP import employee_blueprint
 from routes.orderBP import order_blueprint
 from routes.productBP import product_blueprint
 from routes.productionBP import production_blueprint
-from routes.userBP import user_blueprint
+from routes.customerAccountBP import customerAccount_blueprint
 
 from flask_swagger_ui import get_swaggerui_blueprint
 
@@ -39,7 +39,7 @@ def blueprint_config(app):
     app.register_blueprint(order_blueprint, url_prefix='/orders')
     app.register_blueprint(product_blueprint, url_prefix='/products')
     app.register_blueprint(production_blueprint, url_prefix='/productions')
-    app.register_blueprint(user_blueprint, url_prefix='/users')
+    app.register_blueprint(customerAccount_blueprint, url_prefix='/customeraccounts')
     app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 def configure_rate_limit():
@@ -48,14 +48,14 @@ def configure_rate_limit():
     limiter.limit("10/day")(order_blueprint)
     limiter.limit("10/day")(product_blueprint)
     limiter.limit("10/day")(production_blueprint)
-    limiter.limit("10/day")(user_blueprint)
+    limiter.limit("10/day")(customerAccount_blueprint)
 
-def init_users_info_data():
+def init_customerAccounts_info_data():
     with Session(db.engine) as session:
         with session.begin():
             users = [
-                User(username="JDoe", password="JDP", role="admin"),
-                User(username="bb", password="bbp", role="user")
+                CustomerAccount(username="JDoe", password="JDP", role="admin"),
+                CustomerAccount(username="bb", password="bbp", role="user")
             ]
             session.add_all(users)
 
@@ -73,8 +73,8 @@ def init_roles_customers_data():
     with Session(db.engine) as session:
         with session.begin():
             roles_users = [
-                UserManagementRole(user_management_id=1, role_id=1),
-                UserManagementRole(user_management_id=2, role_id=2)
+                CustomerAccountManagementRole(customerAccount_management_id=1, role_id=1),
+                CustomerAccountManagementRole(customerAccount_management_id=2, role_id=2)
             ]
             session.add_all(roles_users)
 
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     with app.app_context():
         db.drop_all()
         db.create_all()
-        init_users_info_data()
+        init_customerAccounts_info_data()
         init_roles_data()
         init_roles_customers_data()
 
