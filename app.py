@@ -9,6 +9,7 @@ from models.customer import Customer
 from models.customerAccount import CustomerAccount
 from models.role import Role
 from models.customerAccountManagementRole import CustomerAccountManagementRole
+from models.product import Product
 
 from routes.customerBP import customer_blueprint
 from routes.employeeBP import employee_blueprint
@@ -90,6 +91,15 @@ def init_roles_customers_data():
             ]
             session.add_all(roles_users)
 
+def init_products():
+    with Session(db.engine) as session:
+        with session.begin():
+            products = [
+                Product(name="Thing 1", price=3.50),
+                Product(name="Thing 2", price=7.00)
+            ]
+            session.add_all(products)
+
 if __name__ == '__main__':
     app = create_app('DevelopmentConfig')
 
@@ -102,5 +112,6 @@ if __name__ == '__main__':
         init_customerAccounts_info_data()
         init_roles_data()
         init_roles_customers_data()
+        init_products()
 
     app.run(debug=True)

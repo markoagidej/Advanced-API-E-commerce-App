@@ -4,7 +4,7 @@ from services import productService
 from marshmallow import ValidationError
 from utils.util import role_required
 
-@role_required('admin')
+# @role_required('admin')
 def save():
     try:
         product_data = product_schema.load(request.json)
@@ -25,3 +25,29 @@ def find_all_pagination():
     page = request.args.get('page', 1 ,type=int)
     per_page = request.args.get('per_page', 10 ,type=int)
     return products_schema.jsonify(productService.find_all_pagination(page=page, per_page=per_page)), 200
+
+# @role_required('admin')
+def getOne():
+    try:
+        product_data = productService.getOne(request.json)
+        if product_data:
+            return product_schema.jsonify(product_data), 201
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+
+# @role_required('admin')
+def updateProduct():
+    try:
+        product_data = productService.updateProduct(request.json)
+        if product_data:
+            return product_schema.jsonify(product_data), 201
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+
+# @role_required('admin')
+def deleteProduct():
+    try:
+        product_data = productService.deleteProduct(request.json)
+        return product_schema.jsonify(product_data), 201
+    except ValidationError as err:
+        return jsonify(err.messages), 400
