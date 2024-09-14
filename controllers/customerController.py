@@ -3,6 +3,7 @@ from models.schemas.customerSchema import customer_schema, customers_schema
 from services import customerService
 from marshmallow import ValidationError
 from utils.util import role_required
+from caching import cache
 
 # @role_required('admin')
 def save():
@@ -14,6 +15,7 @@ def save():
     customer_save = customerService.save(customer_data)
     return customer_schema.jsonify(customer_save), 201
 
+@cache.cache(timeout=5)
 # @role_required('admin')
 def getAll():
     try:

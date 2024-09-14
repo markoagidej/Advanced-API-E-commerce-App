@@ -2,6 +2,7 @@ from flask import Flask
 from database import db
 from schema import ma
 from limiter import limiter
+from caching import cache
 from sqlalchemy.orm import Session
 
 from models.customer import Customer
@@ -30,6 +31,7 @@ def create_app(config_name):
     app.config.from_object(f'config.{config_name}')
     db.init_app(app)
     ma.init_app(app)
+    cache.init_app(app)
     limiter.init_app(app)
 
     return app
@@ -44,12 +46,12 @@ def blueprint_config(app):
     app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 def configure_rate_limit():
-    limiter.limit("10/day")(customer_blueprint)
-    limiter.limit("10/day")(employee_blueprint)
-    limiter.limit("10/day")(order_blueprint)
-    limiter.limit("10/day")(product_blueprint)
-    limiter.limit("10/day")(production_blueprint)
-    limiter.limit("10/day")(customerAccount_blueprint)
+    limiter.limit("100/day")(customer_blueprint)
+    limiter.limit("100/day")(employee_blueprint)
+    limiter.limit("100/day")(order_blueprint)
+    limiter.limit("100/day")(product_blueprint)
+    limiter.limit("100/day")(production_blueprint)
+    limiter.limit("100/day")(customerAccount_blueprint)
 
 def init_customers():
     with Session(db.engine) as session:
