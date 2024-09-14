@@ -15,7 +15,7 @@ def save():
     customer_save = customerService.save(customer_data)
     return customer_schema.jsonify(customer_save), 201
 
-@cache.cache(timeout=5)
+@cache.cached(timeout=5)
 # @role_required('admin')
 def getAll():
     try:
