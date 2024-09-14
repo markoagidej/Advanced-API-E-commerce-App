@@ -4,6 +4,7 @@ from schema import ma
 from limiter import limiter
 from sqlalchemy.orm import Session
 
+from models.customer import Customer
 from models.customerAccount import CustomerAccount
 from models.role import Role
 from models.customerAccountManagementRole import CustomerAccountManagementRole
@@ -50,14 +51,23 @@ def configure_rate_limit():
     limiter.limit("10/day")(production_blueprint)
     limiter.limit("10/day")(customerAccount_blueprint)
 
+def init_customers():
+    with Session(db.engine) as session:
+        with session.begin():
+            customers = [
+                Customer(name="Jane Doe", email="jdoe@email.com", phone="1234567890"),
+                Customer(name="Billy Bob", email="bb@email.com", phone="0987654321")
+            ]
+            session.add_all(customers)
+
 def init_customerAccounts_info_data():
     with Session(db.engine) as session:
         with session.begin():
-            users = [
+            accounts = [
                 CustomerAccount(username="JDoe", password="JDP", role="admin"),
                 CustomerAccount(username="bb", password="bbp", role="user")
             ]
-            session.add_all(users)
+            session.add_all(accounts)
 
 def init_roles_data():
     with Session(db.engine) as session:
@@ -86,6 +96,7 @@ if __name__ == '__main__':
     with app.app_context():
         db.drop_all()
         db.create_all()
+        init_customers()
         init_customerAccounts_info_data()
         init_roles_data()
         init_roles_customers_data()
