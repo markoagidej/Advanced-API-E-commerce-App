@@ -32,6 +32,10 @@ def token_required(f):
                 return jsonify({'message': "Invalid Token", 'error': 'Unauthorized'}), 401
         if not token:
             return jsonify({'message': "Authentication Token is missing", 'error': 'Unauthorized'}), 401
+        
+        return f(*args, **kwargs)
+    
+    return decorated
 
 def role_required(role):
     def decorator(f):

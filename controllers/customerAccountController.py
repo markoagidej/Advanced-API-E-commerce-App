@@ -58,8 +58,8 @@ def updateCustomerAccount():
     except ValidationError as err:
         return jsonify(err.messages), 400
 
-@token_required
-@role_required('admin')
+# @token_required
+# @role_required('admin')
 def deleteCustomerAccount():
     try:
         customer_data = customerAccountService.deleteCustomerAccount(request.json)
