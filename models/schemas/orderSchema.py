@@ -7,9 +7,10 @@ class OrderSchema(ma.Schema):
     product_id = fields.Integer(required=True)
     quantity = fields.Integer(required=True)
     total_price = fields.Float(required=True)
+    date_placed = fields.DateTime(required=True)
 
 class Meta:
-    fields = ('id', 'customer_id', 'product_id', 'quantity', 'total_price')
+    fields = ('id', 'customer_id', 'product_id', 'quantity', 'total_price', 'date_placed')
 
 order_schema = OrderSchema()
 orders_schema = OrderSchema(many=True)

@@ -1,5 +1,6 @@
 from database import db, Base
 from sqlalchemy.orm import Mapped, mapped_column
+import datetime
 
 class Order(Base):
     __tablename__ = "orders"
@@ -8,3 +9,4 @@ class Order(Base):
     product_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     quantity: Mapped[int] = mapped_column(db.Integer, nullable=False)
     total_price: Mapped[float] = mapped_column(db.Float, nullable=False)
+    date_placed: Mapped[datetime.datetime] = mapped_column(db.Date, nullable=False)

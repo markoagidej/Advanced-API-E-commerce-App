@@ -6,7 +6,7 @@ from models.order import Order
 def save(order_data):
     with Session(db.engine) as session:
         with session.begin():
-            new_order = Order(customer_id=order_data['customer_id'], product_id=order_data['product_id'], quantity=order_data['quantity'], total_price=order_data['total_price'])
+            new_order = Order(customer_id=order_data['customer_id'], product_id=order_data['product_id'], quantity=order_data['quantity'], total_price=order_data['total_price'], date_placed=order_data['date_placed'])
             session.add(new_order)
             session.commit()
 
@@ -22,3 +22,10 @@ def getAll():
 def find_all_pagination(page=1, per_page=1):
     orders = db.paginate(select(Order), page=page, per_page=per_page)
     return orders
+    
+def getOne(id_data):
+    order = db.session.execute(db.select(Order).where(Order.id == id_data["id"])).scalar_one_or_none()
+    if order:
+        return order
+    else:
+        return None
