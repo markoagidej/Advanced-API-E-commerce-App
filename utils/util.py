@@ -18,6 +18,21 @@ def encode_token(user_id, role_names):
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
     return token
 
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        if 'Authorization' in request.headers:
+            try:
+                token = request.header['Authorization'].split(" ")[1]
+                payload = jwt.decode(token, SECRET_KEY, algorithms="HS256")
+            except jwt.ExpiredSignatureError:
+                return jsonify({'message': "Token has expired", 'error': 'Unauthorized'}), 401
+            except jwt.InvalidTokenError:
+                return jsonify({'message': "Invalid Token", 'error': 'Unauthorized'}), 401
+        if not token:
+            return jsonify({'message': "Authentication Token is missing", 'error': 'Unauthorized'}), 401
+
 def role_required(role):
     def decorator(f):
         @wraps(f)

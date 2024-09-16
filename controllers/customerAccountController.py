@@ -2,10 +2,11 @@ from flask import request, jsonify
 from models.schemas.customerAccountSchema import customerAccount_schema, customerAccounts_schema
 from services import customerAccountService
 from marshmallow import ValidationError
-from utils.util import role_required
+from utils.util import token_required, role_required
 from caching import cache
 
-# @role_required('admin')
+@token_required
+@role_required('admin')
 def save():
     try:
         customerAccount_data = customerAccount_schema.load(request.json)
@@ -16,6 +17,7 @@ def save():
     return customerAccount_schema.jsonify(customerAccount_save), 201
 
 @cache.cached(timeout=5)
+@token_required
 @role_required('admin')
 def getAll():
     try:
@@ -36,7 +38,8 @@ def login():
         }
         return jsonify(resp), 404
 
-# @role_required('admin')
+@token_required
+@role_required('admin')
 def getOne():
     try:
         customer_data = customerAccountService.getOne(request.json)
@@ -45,7 +48,8 @@ def getOne():
     except ValidationError as err:
         return jsonify(err.messages), 400
 
-# @role_required('admin')
+@token_required
+@role_required('admin')
 def updateCustomerAccount():
     try:
         customer_data = customerAccountService.updateCustomerAccount(request.json)
@@ -54,7 +58,8 @@ def updateCustomerAccount():
     except ValidationError as err:
         return jsonify(err.messages), 400
 
-# @role_required('admin')
+@token_required
+@role_required('admin')
 def deleteCustomerAccount():
     try:
         customer_data = customerAccountService.deleteCustomerAccount(request.json)
