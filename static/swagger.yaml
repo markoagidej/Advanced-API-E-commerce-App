@@ -65,7 +65,6 @@ paths:
               name: "Jane Doe"
               email: "jdoe@email.com"
               phone: "1234567890"
-
         401:
           description: "Unauthorized"
           schema:
@@ -92,60 +91,189 @@ paths:
               message: "Something unexpected happened with the server. Try again later or contact an admin"
       security:
         - bearerAuth: []
-  /employees:
-    post:
-      tags:
-        - employees
-      summary: "Create Employee"
-      description: "Endpoint to create a new Employee"
-      parameters:
-        - in: "body"
-          name: "body"
-          description: "New Employee data"
-          required: true
-          schema:
-            $ref: "#/definitions/EmployeeData"
-      responses:
-        200:
-          description: "Employee created successfully"
-          schema:
-            $ref: "#/definitions/Employee"
-        400:
-          description: "Bad Request"
-          schema:
-            $ref: "#/definitions/Error"
-          examples:
-            application/json:
-              status: "error"
-              message: "Invalid Data"
-        500:
-          description: "Error with server"
-          schema:
-            $ref: "#/definitions/Error"
-          examples:
-            application/json:
-              status: "error"
-              message: "Something unexpected happened with the server. Try again later or contact an admin"
+  /customers/get:
     get:
-      tags:
-        - employees
-      summary: "Get all Employee"
-      description: "Endpoint to view all Employee"
-      responses:
-        200:
-          description: "Successfully retreived all employees"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Employee"
-        500:
-          description: "Error with server"
-          schema:
-            $ref: "#/definitions/Error"
-          examples:
-            application/json:
-              status: "error"
-              message: "Something unexpected happened with the server. Try again later or contact an admin"
+        tags:
+          - customers
+        summary: "Get Specific Customers"
+        description: "Endpoint to view one Customer"
+        responses:
+          200:
+            description: "Successfully retreived customer"
+            schema:
+              $ref: "#/definitions/Customer"
+            examples:
+              application/json:
+                id: 1
+                name: "Jane Doe"
+                email: "jdoe@email.com"
+                phone: "1234567890"
+          401:
+            description: "Unauthorized"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You have not been authorized"
+          403:
+            description: "Forbidden"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You do not have permission to perform this action"
+          500:
+            description: "Error with server"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "Something unexpected happened with the server. Try again later or contact an admin"
+        security:
+          - bearerAuth: []
+  /customers/update:  
+    update:
+        tags:
+          - customers
+        summary: "Update Specific Customer"
+        description: "Endpoint to update a Customer"
+        responses:
+          200:
+            description: "Successfully updated customer"
+            schema:
+              $ref: "#/definitions/Customer"
+            examples:
+              application/json:
+                id: 1
+                name: "Jane Doe"
+                email: "jdoe@email.com"
+                phone: "1234567890"
+          401:
+            description: "Unauthorized"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You have not been authorized"
+          403:
+            description: "Forbidden"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You do not have permission to perform this action"
+          500:
+            description: "Error with server"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "Something unexpected happened with the server. Try again later or contact an admin"
+        security:
+          - bearerAuth: []
+  /customers/delete:
+    delete:
+        tags:
+          - customers
+        summary: "Delete Specific Customer"
+        description: "Endpoint to delete a Customer"
+        responses:
+          200:
+            description: "Successfully deleted customer"
+            schema:
+              $ref: "#/definitions/Customer"
+            examples:
+              application/json:
+                id: 1
+                name: "Jane Doe"
+                email: "jdoe@email.com"
+                phone: "1234567890"
+          401:
+            description: "Unauthorized"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You have not been authorized"
+          403:
+            description: "Forbidden"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You do not have permission to perform this action"
+          500:
+            description: "Error with server"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "Something unexpected happened with the server. Try again later or contact an admin"
+        security:
+          - bearerAuth: []
+  # /employees:
+  #   post:
+  #     tags:
+  #       - employees
+  #     summary: "Create Employee"
+  #     description: "Endpoint to create a new Employee"
+  #     parameters:
+  #       - in: "body"
+  #         name: "body"
+  #         description: "New Employee data"
+  #         required: true
+  #         schema:
+  #           $ref: "#/definitions/EmployeeData"
+  #     responses:
+  #       200:
+  #         description: "Employee created successfully"
+  #         schema:
+  #           $ref: "#/definitions/Employee"
+  #       400:
+  #         description: "Bad Request"
+  #         schema:
+  #           $ref: "#/definitions/Error"
+  #         examples:
+  #           application/json:
+  #             status: "error"
+  #             message: "Invalid Data"
+  #       500:
+  #         description: "Error with server"
+  #         schema:
+  #           $ref: "#/definitions/Error"
+  #         examples:
+  #           application/json:
+  #             status: "error"
+  #             message: "Something unexpected happened with the server. Try again later or contact an admin"
+  #   get:
+  #     tags:
+  #       - employees
+  #     summary: "Get all Employee"
+  #     description: "Endpoint to view all Employee"
+  #     responses:
+  #       200:
+  #         description: "Successfully retreived all employees"
+  #         schema:
+  #           type: "array"
+  #           items:
+  #             $ref: "#/definitions/Employee"
+  #       500:
+  #         description: "Error with server"
+  #         schema:
+  #           $ref: "#/definitions/Error"
+  #         examples:
+  #           application/json:
+  #             status: "error"
+  #             message: "Something unexpected happened with the server. Try again later or contact an admin"
   /orders:
     post:
       tags:
@@ -199,7 +327,50 @@ paths:
           examples:
             application/json:
               status: "error"
-              message: "Something unexpected happened with the server. Try again later or contact an admin"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"              
+  /orders/get:
+    get:
+        tags:
+          - orders
+        summary: "Get Specific Orders"
+        description: "Endpoint to view one Order"
+        responses:
+          200:
+            description: "Successfully retreived order"
+            schema:
+              $ref: "#/definitions/Order"
+            examples:
+              application/json:
+                id: 1
+                name: "Jane Doe"
+                email: "jdoe@email.com"
+                phone: "1234567890"
+          401:
+            description: "Unauthorized"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You have not been authorized"
+          403:
+            description: "Forbidden"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You do not have permission to perform this action"
+          500:
+            description: "Error with server"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "Something unexpected happened with the server. Try again later or contact an admin"
+        security:
+          - bearerAuth: []
   /orders/paginate:
     get:
       tags:
@@ -287,7 +458,136 @@ paths:
           examples:
             application/json:
               status: "error"
-              message: "Something unexpected happened with the server. Try again later or contact an admin"
+              message: "Something unexpected happened with the server. Try again later or contact an admin"              
+  /customeraccounts/get:
+    get:
+        tags:
+          - customerAccounts
+        summary: "Get Specific CustomerAccounts"
+        description: "Endpoint to view one CustomerAccount"
+        responses:
+          200:
+            description: "Successfully retreived customerAccount"
+            schema:
+              $ref: "#/definitions/CustomerAccount"
+            examples:
+              application/json:
+                id: 1
+                name: "Jane Doe"
+                email: "jdoe@email.com"
+                phone: "1234567890"
+          401:
+            description: "Unauthorized"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You have not been authorized"
+          403:
+            description: "Forbidden"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You do not have permission to perform this action"
+          500:
+            description: "Error with server"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "Something unexpected happened with the server. Try again later or contact an admin"
+        security:
+          - bearerAuth: []
+  /customeraccounts/update:  
+    update:
+        tags:
+          - customerAccounts
+        summary: "Update Specific CustomerAccount"
+        description: "Endpoint to update a CustomerAccount"
+        responses:
+          200:
+            description: "Successfully updated customerAccount"
+            schema:
+              $ref: "#/definitions/CustomerAccount"
+            examples:
+              application/json:
+                id: 1
+                name: "Jane Doe"
+                email: "jdoe@email.com"
+                phone: "1234567890"
+          401:
+            description: "Unauthorized"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You have not been authorized"
+          403:
+            description: "Forbidden"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You do not have permission to perform this action"
+          500:
+            description: "Error with server"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "Something unexpected happened with the server. Try again later or contact an admin"
+        security:
+          - bearerAuth: []
+  /customeraccounts/delete:
+    delete:
+        tags:
+          - customerAccounts
+        summary: "Delete Specific CustomerAccount"
+        description: "Endpoint to delete a CustomerAccount"
+        responses:
+          200:
+            description: "Successfully deleted customerAccount"
+            schema:
+              $ref: "#/definitions/CustomerAccount"
+            examples:
+              application/json:
+                id: 1
+                name: "Jane Doe"
+                email: "jdoe@email.com"
+                phone: "1234567890"
+          401:
+            description: "Unauthorized"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You have not been authorized"
+          403:
+            description: "Forbidden"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "You do not have permission to perform this action"
+          500:
+            description: "Error with server"
+            schema:
+              $ref: "#/definitions/Error"
+            examples:
+              application/json:
+                status: "error"
+                message: "Something unexpected happened with the server. Try again later or contact an admin"
+        security:
+          - bearerAuth: []
   /products/paginate:
     get:
       tags:
@@ -322,60 +622,60 @@ paths:
             application/json:
               status: "error"
               message: "Something unexpected happened with the server. Try again later or contact an admin"
-  /productions:
-    post:
-      tags:
-        - productions
-      summary: "Create Production"
-      description: "Endpoint to create a new Production"
-      parameters:
-        - in: "body"
-          name: "body"
-          description: "New Production data"
-          required: true
-          schema:
-            $ref: "#/definitions/ProductionData"
-      responses:
-        200:
-          description: "Production created successfully"
-          schema:
-            $ref: "#/definitions/Production"
-        400:
-          description: "Bad Request"
-          schema:
-            $ref: "#/definitions/Error"
-          examples:
-            application/json:
-              status: "error"
-              message: "Invalid Data"
-        500:
-          description: "Error with server"
-          schema:
-            $ref: "#/definitions/Error"
-          examples:
-            application/json:
-              status: "error"
-              message: "Something unexpected happened with the server. Try again later or contact an admin"
-    get:
-      tags:
-        - productions
-      summary: "Get all Productions"
-      description: "Endpoint to view all Productions"
-      responses:
-        200:
-          description: "Successfully retreived all productions"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Production"
-        500:
-          description: "Error with server"
-          schema:
-            $ref: "#/definitions/Error"
-          examples:
-            application/json:
-              status: "error"
-              message: "Something unexpected happened with the server. Try again later or contact an admin"
+  # /productions:
+  #   post:
+  #     tags:
+  #       - productions
+  #     summary: "Create Production"
+  #     description: "Endpoint to create a new Production"
+  #     parameters:
+  #       - in: "body"
+  #         name: "body"
+  #         description: "New Production data"
+  #         required: true
+  #         schema:
+  #           $ref: "#/definitions/ProductionData"
+  #     responses:
+  #       200:
+  #         description: "Production created successfully"
+  #         schema:
+  #           $ref: "#/definitions/Production"
+  #       400:
+  #         description: "Bad Request"
+  #         schema:
+  #           $ref: "#/definitions/Error"
+  #         examples:
+  #           application/json:
+  #             status: "error"
+  #             message: "Invalid Data"
+  #       500:
+  #         description: "Error with server"
+  #         schema:
+  #           $ref: "#/definitions/Error"
+  #         examples:
+  #           application/json:
+  #             status: "error"
+  #             message: "Something unexpected happened with the server. Try again later or contact an admin"
+  #   get:
+  #     tags:
+  #       - productions
+  #     summary: "Get all Productions"
+  #     description: "Endpoint to view all Productions"
+  #     responses:
+  #       200:
+  #         description: "Successfully retreived all productions"
+  #         schema:
+  #           type: "array"
+  #           items:
+  #             $ref: "#/definitions/Production"
+  #       500:
+  #         description: "Error with server"
+  #         schema:
+  #           $ref: "#/definitions/Error"
+  #         examples:
+  #           application/json:
+  #             status: "error"
+  #             message: "Something unexpected happened with the server. Try again later or contact an admin"
 definitions: 
   Customer:
     type: "object"
@@ -414,35 +714,35 @@ definitions:
       - "name"
       - "email"
       - "phone"
-  Employee:
-    type: "object"
-    properties:
-      name:
-        type: "string"
-        description: "Employee name"
-      position:
-        type: "string"
-        description: "Employee position"
-      id:
-        type: "integer"
-        format: "int64"
-        description: "Employee's unique ID"
-    required:
-      - "id"
-      - "name"
-      - "position"
-  EmployeeData:
-    type: "object"
-    properties:
-      name:
-        type: "string"
-        description: "Employee name"
-      position:
-        type: "string"
-        description: "Employee position"
-    required:
-      - "name"
-      - "position"
+  # Employee:
+  #   type: "object"
+  #   properties:
+  #     name:
+  #       type: "string"
+  #       description: "Employee name"
+  #     position:
+  #       type: "string"
+  #       description: "Employee position"
+  #     id:
+  #       type: "integer"
+  #       format: "int64"
+  #       description: "Employee's unique ID"
+  #   required:
+  #     - "id"
+  #     - "name"
+  #     - "position"
+  # EmployeeData:
+  #   type: "object"
+  #   properties:
+  #     name:
+  #       type: "string"
+  #       description: "Employee name"
+  #     position:
+  #       type: "string"
+  #       description: "Employee position"
+  #   required:
+  #     - "name"
+  #     - "position"
   Order:
     type: "object"
     properties:
@@ -463,12 +763,16 @@ definitions:
         type: "integer"
         format: "int64"
         description: "Order's unique ID"
+      date_placed:
+        type: "DateTime"
+        description: "Date and time order was placed"
     required:
       - "id"
       - "customer_id"
       - "product_id"
       - "quantity"
       - "total_price"
+      - "date_placed"
   OrderData:
     type: "object"
     properties:
@@ -485,11 +789,15 @@ definitions:
         type: "number"
         format: "float"
         description: "Price of product times quantity"
+      date_placed:
+        type: "DateTime"
+        description: "Date and time order was placed"
     required:
       - "customer_id"
       - "product_id"
       - "quantity"
       - "total_price"
+      - "date_placed"
   Product:
     type: "object"
     properties:
@@ -573,3 +881,40 @@ definitions:
     required:
       - "status"
       - "message"
+  CustomerAccount:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+        description: "Account username"
+      password:
+        type: "string"
+        description: "Account password"
+      role:
+        type: "string"
+        description: "Account role"
+      id:
+        type: "integer"
+        format: "int64"
+        description: "Accounts's unique ID"
+    required:
+      - "id"
+      - "username"
+      - "password"
+      - "role"
+  CustomerData:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+        description: "Account username"
+      password:
+        type: "string"
+        description: "Account password"
+      role:
+        type: "string"
+        description: "Account role"
+    required:
+      - "username"
+      - "password"
+      - "role"
