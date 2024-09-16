@@ -3,7 +3,9 @@ from models.schemas.customerAccountSchema import customerAccount_schema, custome
 from services import customerAccountService
 from marshmallow import ValidationError
 from utils.util import role_required
+from caching import cache
 
+# @role_required('admin')
 def save():
     try:
         customerAccount_data = customerAccount_schema.load(request.json)
@@ -13,6 +15,7 @@ def save():
     customerAccount_save = customerAccountService.save(customerAccount_data)
     return customerAccount_schema.jsonify(customerAccount_save), 201
 
+@cache.cached(timeout=5)
 @role_required('admin')
 def getAll():
     try:
@@ -32,3 +35,29 @@ def login():
             "message": "User does not exist"
         }
         return jsonify(resp), 404
+
+# @role_required('admin')
+def getOne():
+    try:
+        customer_data = customerAccountService.getOne(request.json)
+        if customer_data:
+            return customerAccount_schema.jsonify(customer_data), 201
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+
+# @role_required('admin')
+def updateCustomerAccount():
+    try:
+        customer_data = customerAccountService.updateCustomerAccount(request.json)
+        if customer_data:
+            return customerAccount_schema.jsonify(customer_data), 201
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+
+# @role_required('admin')
+def deleteCustomerAccount():
+    try:
+        customer_data = customerAccountService.deleteCustomerAccount(request.json)
+        return customerAccount_schema.jsonify(customer_data), 201
+    except ValidationError as err:
+        return jsonify(err.messages), 400
