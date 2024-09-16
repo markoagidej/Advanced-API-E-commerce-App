@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import delete, update
 from database import db
 from models.customerAccount import CustomerAccount
+from models.customerAccountManagementRole import CustomerAccountManagementRole
 from utils.util import encode_token
 
 def save(customerAccount_data):
@@ -52,6 +53,9 @@ def updateCustomerAccount(new_data):
         return None
 
 def deleteCustomerAccount(id_data):
+    role = db.session.execute(db.select(CustomerAccountManagementRole).where(CustomerAccountManagementRole.id == id_data["id"])).scalar_one_or_none()
+    if role:
+        db.session.execute(delete(CustomerAccountManagementRole).where(CustomerAccountManagementRole.id == id_data["id"]))
     account = db.session.execute(db.select(CustomerAccount).where(CustomerAccount.id == id_data["id"])).scalar_one_or_none()
     if account:
         db.session.execute(delete(CustomerAccount).where(CustomerAccount.id == id_data["id"]))
